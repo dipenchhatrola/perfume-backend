@@ -102,7 +102,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: [
-        "pending",       // Order placed, payment pending
+        "Order Placed",       // Order placed, payment pending
         "confirmed",     // Payment confirmed
         "processing",    // Preparing for shipment
         "shipped",       // Dispatched
@@ -112,7 +112,7 @@ const orderSchema = new mongoose.Schema(
         "refunded",      // Refund processed
         "failed"         // Payment failed
       ],
-      default: "pending",
+      default: "Order Placed",
     },
 
     // ✅ Detailed payment info for admin
@@ -124,8 +124,8 @@ const orderSchema = new mongoose.Schema(
 
     paymentStatus: {
       type: String,
-      enum: ["pending", "completed", "failed", "refunded"],
-      default: "pending",
+      enum: ["Order Placed", "completed", "failed", "refunded"],
+      default: "Order Placed",
     },
 
     paymentId: {
@@ -233,9 +233,9 @@ orderSchema.statics.getAdminStats = async function() {
         _id: null,
         totalOrders: { $sum: 1 },
         totalRevenue: { $sum: "$total" },
-        pendingOrders: {
+        placedOrders: {
           $sum: {
-            $cond: [{ $in: ["$status", ["pending", "confirmed", "processing"]] }, 1, 0]
+            $cond: [{ $in: ["$status", ["Order Placed", "confirmed", "processing"]] }, 1, 0]
           }
         },
         completedOrders: {
@@ -252,7 +252,7 @@ orderSchema.statics.getAdminStats = async function() {
   return stats[0] || {
     totalOrders: 0,
     totalRevenue: 0,
-    pendingOrders: 0,
+    placedOrders: 0,
     completedOrders: 0,
     cancelledOrders: 0,
     avgOrderValue: 0

@@ -40,7 +40,7 @@ exports.createOrder = async (req, res) => {
       total,
       paymentMethod: paymentMethod || "cod",
       shippingAddress: shippingAddress || {},
-      status: "pending"
+      status: "Order Placed"
     });
 
     /* 2️⃣ Create Notification */
