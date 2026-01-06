@@ -1,9 +1,11 @@
 const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
-const { login } = require("../controllers/authController");
+const { login, register } = require("../controllers/authController");
 const router = express.Router();
 
+// Public routes
 router.post("/login", login);
+router.post("/register", register);
 
 // Protected API
 router.get("/profile", authMiddleware, (req, res) => {

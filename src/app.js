@@ -8,6 +8,8 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
+const authRoutes = require("./routes/authRoute");
+const adminRoutes = require("./routes/adminRoutes");
 
 connectDB();
 
@@ -26,5 +28,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/notification", notificationRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api", adminRoutes);
 
 module.exports = app;
