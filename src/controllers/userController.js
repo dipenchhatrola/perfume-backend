@@ -7,15 +7,21 @@ const bcrypt = require("bcryptjs");
 ========================= */
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, phone, role } = req.body;
+    const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: "Name, email and password are required" });
+      return res.status(400).json({ 
+        success: false,
+        message: "All fields are required" 
+      });
     }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({
+        success: false,
+        message: "User already exists, please login",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,23 +29,22 @@ exports.register = async (req, res) => {
     const user = await User.create({
       name,
       email,
-      phone,
       password: hashedPassword,
-      role: role || 'user',
     });
 
+    // Generate token for the newly registered user
+    const token = generateToken({ id: user._id });
+
+    // Return same response structure as login
     res.status(201).json({
       success: true,
-      message: "User registered successfully",
+      message: "Registration successful",
+      token,
       user: {
-        _id: user._id,
+        id: user._id,
         name: user.name,
         email: user.email,
-        phone: user.phone,
-        role: user.role,
-        status: user.status,
-        registrationDate: user.registrationDate,
-        createdAt: user.createdAt,
+        role: user.role, // Make sure your User model has a role field
       },
     });
   } catch (error) {
@@ -49,6 +54,7 @@ exports.register = async (req, res) => {
     });
   }
 };
+
 /* =========================
    Login User
 ========================= */

@@ -8,8 +8,6 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
-const authRoutes = require("./routes/authRoute");
-const adminRoutes = require("./routes/adminRoutes");
 
 connectDB();
 
@@ -28,7 +26,12 @@ app.use("/api/users", userRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/notification", notificationRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api", adminRoutes);
+
+// dummy api for testing
+app.get("/api/ping", (req, res) => {
+  res.status(200).json({ message: "pong" });
+});
+
+
 
 module.exports = app;

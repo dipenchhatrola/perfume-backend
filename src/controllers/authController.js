@@ -1,4 +1,4 @@
-const authService = require("../services/authServices");
+const authService = require("../services/auth.service");
 
 exports.login = async (req, res) => {
   try {
@@ -13,34 +13,6 @@ exports.login = async (req, res) => {
     });
   } catch (error) {
     res.status(401).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-// REGISTER FUNCTION
-exports.register = async (req, res) => {
-  try {
-    const { email, username, password, phone } = req.body;
-
-    // Validate required fields
-    if (!email || !username || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Please provide all required fields"
-      });
-    }
-
-    const data = await authService.register(email, username, password, phone);
-
-    res.status(201).json({
-      success: true,
-      message: "Registration successful",
-      data,
-    });
-  } catch (error) {
-    res.status(400).json({
       success: false,
       message: error.message,
     });
